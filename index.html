@@ -1,0 +1,1927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aeline — Building the Future with AI and Strategy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@1,8..60,300;1,8..60,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ═══════════════════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #06060C;
+      color: rgba(255,255,255,0.85);
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ═══════════════════════════════════════════════════════════
+       LIQUID GLASS — LIGHT
+    ═══════════════════════════════════════════════════════════ */
+    .liquid-glass {
+      background: rgba(255,255,255,0.01);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: none;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .liquid-glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.4px;
+      background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.45) 0%,
+        rgba(255,255,255,0.15) 20%,
+        transparent 40%,
+        transparent 60%,
+        rgba(255,255,255,0.15) 80%,
+        rgba(255,255,255,0.45) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       LIQUID GLASS — STRONG
+    ═══════════════════════════════════════════════════════════ */
+    .liquid-glass-strong {
+      background: rgba(255,255,255,0.01);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+      border: none;
+      box-shadow: 4px 4px 4px rgba(0,0,0,0.05), inset 0 1px 1px rgba(255,255,255,0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .liquid-glass-strong::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.4px;
+      background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.5) 0%,
+        rgba(255,255,255,0.2) 20%,
+        transparent 40%,
+        transparent 60%,
+        rgba(255,255,255,0.2) 80%,
+        rgba(255,255,255,0.5) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       HERO WRAP
+    ═══════════════════════════════════════════════════════════ */
+    .hero-wrap {
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .hero-video-scrim {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.18);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-panels {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ─── LEFT PANEL ──────────────────────────────────────────── */
+    .panel-left {
+      width: 52%;
+      position: relative;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .panel-glass {
+      position: absolute;
+      inset: 1.5rem;
+      border-radius: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      padding: 1.75rem 2.25rem;
+    }
+
+    .panel-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .panel-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-logo-mark {
+      width: 32px; height: 32px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .panel-logo-txt {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 20px;
+      color: white;
+      letter-spacing: -0.04em;
+    }
+
+    .menu-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 100px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: rgba(255,255,255,0.9);
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      transition: transform 0.2s ease;
+    }
+
+    .menu-btn:hover  { transform: scale(1.05); }
+    .menu-btn:active { transform: scale(0.95); }
+
+    .panel-hero-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding: 2rem 0;
+    }
+
+    .panel-logo-large {
+      width: 72px; height: 72px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: -0.5rem;
+    }
+
+    .hero-h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: clamp(34px, 4vw, 60px);
+      line-height: 1.06;
+      letter-spacing: -0.05em;
+      color: white;
+    }
+
+    .hero-h1 em {
+      font-family: 'Source Serif 4', serif;
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(255,255,255,0.75);
+      letter-spacing: -0.03em;
+    }
+
+    .hero-sub {
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.7);
+      max-width: 400px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 22px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: white;
+      background: transparent;
+      transition: transform 0.2s ease;
+    }
+
+    .cta-btn:hover  { transform: scale(1.05); }
+    .cta-btn:active { transform: scale(0.95); }
+
+    .cta-icon {
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .hero-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hero-pill {
+      padding: 6px 16px;
+      border-radius: 100px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: 0.02em;
+    }
+
+    .panel-quote { flex-shrink: 0; padding-top: 1.5rem; }
+
+    .visionary-label {
+      display: block;
+      font-family: 'Poppins', sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+
+    .quote-text {
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+
+    .quote-text em {
+      font-family: 'Source Serif 4', serif;
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    .quote-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quote-author hr {
+      flex: 1;
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .quote-author span {
+      font-family: 'Poppins', sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      white-space: nowrap;
+    }
+
+    /* ─── RIGHT PANEL ─────────────────────────────────────────── */
+    .panel-right {
+      width: 48%;
+      display: flex;
+      flex-direction: column;
+      padding: 1.5rem 1.5rem 1.5rem 0.5rem;
+    }
+
+    .social-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 100px;
+    }
+
+    .social-icon-wrap {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.8);
+      transition: color 0.18s ease;
+    }
+
+    .social-icon-wrap:hover { color: white; }
+
+    .social-divider {
+      width: 1px; height: 18px;
+      background: rgba(255,255,255,0.18);
+      margin: 0 2px;
+    }
+
+    .account-btn {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: transparent;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease;
+    }
+
+    .account-btn:hover  { transform: scale(1.05); }
+    .account-btn:active { transform: scale(0.95); }
+
+    .community-card {
+      width: 224px;
+      padding: 16px 18px;
+      border-radius: 16px;
+      margin-top: 16px;
+    }
+
+    .community-card h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: white;
+      margin-bottom: 6px;
+    }
+
+    .community-card p {
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.6;
+    }
+
+    .feature-outer {
+      margin-top: auto;
+      border-radius: 2.5rem;
+      padding: 14px;
+    }
+
+    .feature-cards-top {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .feature-card {
+      flex: 1;
+      padding: 16px;
+      border-radius: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .feature-card-icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .feature-card-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .feature-card-desc {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.5;
+    }
+
+    .feature-bottom-card {
+      padding: 12px 14px;
+      border-radius: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .feature-thumb {
+      width: 80px; height: 56px;
+      border-radius: 10px;
+      object-fit: cover;
+      object-position: top center;
+      flex-shrink: 0;
+    }
+
+    .feature-bottom-text h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: white;
+      margin-bottom: 4px;
+    }
+
+    .feature-bottom-text p {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.5;
+    }
+
+    .feature-plus-btn {
+      margin-left: auto;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: transparent;
+      color: white;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+
+    .feature-plus-btn:hover  { transform: scale(1.05); }
+    .feature-plus-btn:active { transform: scale(0.95); }
+
+    @media (max-width: 1023px) {
+      .panel-left  { width: 100%; }
+      .panel-glass { inset: 1rem; }
+      .panel-right { display: none; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       STICKY NAV
+    ═══════════════════════════════════════════════════════════ */
+    .nav-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: rgba(6,6,12,0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .nav-bar.visible { opacity: 1; pointer-events: auto; }
+
+    .nav-inner {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: white;
+      letter-spacing: -0.04em;
+    }
+
+    .nav-logo-mark {
+      width: 30px; height: 30px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.18s ease;
+    }
+
+    .nav-links a:hover { color: white; }
+
+    .btn-nav {
+      background: rgba(255,255,255,0.08);
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 10px 22px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.18s ease, transform 0.14s ease;
+      position: relative;
+    }
+
+    .btn-nav::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 100px;
+      padding: 1px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.08) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .btn-nav:hover  { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+    .btn-nav:active { transform: translateY(0); }
+
+    /* ═══════════════════════════════════════════════════════════
+       SHARED SECTION TOKENS
+    ═══════════════════════════════════════════════════════════ */
+    .section-wrap {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+
+    .section-tag-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+      flex-shrink: 0;
+    }
+
+    .section-tag-num {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+    }
+
+    .section-tag-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    .section-heading {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: clamp(32px, 3.8vw, 54px);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      color: white;
+    }
+
+    .section-heading em {
+      font-family: 'Source Serif 4', serif;
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: -0.02em;
+    }
+
+    /* Large faded background number */
+    .bg-num {
+      position: absolute;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: clamp(120px, 18vw, 220px);
+      line-height: 1;
+      color: rgba(255,255,255,0.025);
+      letter-spacing: -0.06em;
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    /* Subtle horizontal divider */
+    .section-rule {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.08) 70%, transparent);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       ABOUT SECTION
+    ═══════════════════════════════════════════════════════════ */
+    .about-section {
+      background: #06060C;
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Radial glow top-right */
+    .about-section::after {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.022) 0%, transparent 65%);
+      top: -200px; right: -150px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .about-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .about-left { }
+
+    .about-heading {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      font-size: clamp(34px, 3.8vw, 54px);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      color: white;
+      margin-bottom: 28px;
+    }
+
+    .about-heading em {
+      font-family: 'Source Serif 4', serif;
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+    }
+
+    .about-desc {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.55);
+      max-width: 500px;
+      margin-bottom: 40px;
+    }
+
+    .about-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      border-radius: 100px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: white;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .about-cta:hover  { transform: scale(1.04); }
+    .about-cta:active { transform: scale(0.97); }
+
+    .about-cta-arrow {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Right column */
+    .about-right {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    /* Image card */
+    .about-img-card {
+      border-radius: 24px;
+      overflow: hidden;
+      position: relative;
+      height: 260px;
+    }
+
+    .about-img-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      filter: grayscale(20%) brightness(0.75);
+    }
+
+    .about-img-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(6,6,12,0.85) 0%, rgba(6,6,12,0.2) 60%, transparent 100%);
+    }
+
+    .about-img-card-badge {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .about-img-card-badge .badge-txt {
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: white;
+    }
+
+    .about-img-card-badge .badge-sub {
+      font-size: 11px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      margin-top: 3px;
+    }
+
+    /* Stats strip */
+    .about-stats-strip {
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+    }
+
+    .about-stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      flex: 1;
+    }
+
+    .about-stat-num {
+      font-family: 'Poppins', sans-serif;
+      font-size: 28px;
+      font-weight: 500;
+      color: white;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .about-stat-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      text-align: center;
+    }
+
+    .about-stat-divider {
+      width: 1px; height: 36px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       METRICS SECTION
+    ═══════════════════════════════════════════════════════════ */
+    .metrics-section {
+      background: #08080F;
+      padding: 100px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .metric-card {
+      border-radius: 22px;
+      padding: 28px 26px;
+      display: flex;
+      flex-direction: column;
+      min-height: 230px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: auto;
+    }
+
+    .m-tag {
+      font-family: 'Poppins', sans-serif;
+      font-size: 9.5px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.35);
+      padding: 4px 11px;
+      border-radius: 100px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .metric-sublabel {
+      font-family: 'Poppins', sans-serif;
+      font-size: 9.5px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 8px;
+    }
+
+    .metric-num {
+      font-family: 'Poppins', sans-serif;
+      font-size: 54px;
+      font-weight: 500;
+      letter-spacing: -0.05em;
+      color: white;
+      line-height: 1;
+      margin-top: auto;
+    }
+
+    .metric-desc {
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.65;
+      margin-top: 10px;
+    }
+
+    /* Image card variant */
+    .metric-card-img {
+      border-radius: 22px;
+      min-height: 230px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .metric-card-img img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.45) grayscale(25%);
+    }
+
+    .metric-card-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8,8,15,0.9) 10%, transparent 70%);
+    }
+
+    .metric-card-img-content {
+      position: absolute;
+      bottom: 24px;
+      left: 26px;
+      right: 26px;
+    }
+
+    .metric-num-white {
+      font-family: 'Poppins', sans-serif;
+      font-size: 54px;
+      font-weight: 500;
+      color: white;
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+
+    .metric-desc-white {
+      font-size: 11.5px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.6);
+      margin-top: 6px;
+      line-height: 1.55;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       PARTNERS MARQUEE
+    ═══════════════════════════════════════════════════════════ */
+    .marquee-section {
+      background: #06060C;
+      padding: 36px 0;
+      overflow: hidden;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .marquee-label {
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+      margin-bottom: 28px;
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 64px;
+      width: max-content;
+      animation: slide 28s linear infinite;
+    }
+
+    @keyframes slide {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    .logo-pill {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      white-space: nowrap;
+      opacity: 0.32;
+      transition: opacity .25s ease;
+      cursor: default;
+    }
+
+    .logo-pill:hover { opacity: 0.65; }
+
+    .logo-icon {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-pill-txt {
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      letter-spacing: -0.01em;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       SERVICES SECTION
+    ═══════════════════════════════════════════════════════════ */
+    .services-section {
+      background: #08080F;
+      padding: 120px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Radial glow bottom-left */
+    .services-section::after {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.02) 0%, transparent 65%);
+      bottom: -150px; left: -100px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .services-inner { position: relative; z-index: 1; }
+
+    .services-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: end;
+      margin-bottom: 56px;
+    }
+
+    .services-intro {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.5);
+      max-width: 400px;
+      align-self: end;
+    }
+
+    /* Services cards: 2x2 wide */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .svc-card {
+      border-radius: 24px;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      min-height: 280px;
+      position: relative;
+      transition: transform 0.25s ease;
+      cursor: default;
+    }
+
+    .svc-card:hover { transform: translateY(-4px); }
+    .svc-card:focus-visible { outline: 1px solid rgba(255,255,255,0.2); outline-offset: 2px; }
+
+    .svc-num {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .svc-icon-wrap {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+      transition: background 0.2s ease;
+    }
+
+    .svc-card:hover .svc-icon-wrap { background: rgba(255,255,255,0.13); }
+
+    .svc-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 20px;
+      font-weight: 500;
+      color: white;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .svc-desc {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.75;
+      flex: 1;
+    }
+
+    .svc-link {
+      margin-top: 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      transition: color 0.18s ease;
+    }
+
+    .svc-card:hover .svc-link { color: rgba(255,255,255,0.75); }
+
+    /* ═══════════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════════ */
+    .footer {
+      background: #040409;
+      padding: 80px 0 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(255,255,255,0.08) 30%, rgba(255,255,255,0.08) 70%, transparent);
+    }
+
+    .footer-inner { position: relative; z-index: 1; }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 60px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .footer-brand { }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      color: white;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+    }
+
+    .footer-logo-mark {
+      width: 30px; height: 30px;
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .footer-tagline {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.75;
+      max-width: 260px;
+      margin-bottom: 28px;
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 8px;
+    }
+
+    .footer-social-btn {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(255,255,255,0.55);
+      transition: background 0.18s ease, color 0.18s ease;
+      position: relative;
+    }
+
+    .footer-social-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      padding: 1px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.04) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .footer-social-btn:hover { background: rgba(255,255,255,0.1); color: white; }
+
+    .footer-col h4 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 18px;
+    }
+
+    .footer-col ul { list-style: none; }
+    .footer-col li + li { margin-top: 12px; }
+
+    .footer-col a {
+      font-size: 13.5px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.55);
+      transition: color 0.18s ease;
+    }
+
+    .footer-col a:hover { color: rgba(255,255,255,0.9); }
+
+    .footer-bottom {
+      padding: 24px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.25);
+    }
+
+    .footer-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: white;
+      background: rgba(255,255,255,0.06);
+      transition: background 0.18s ease, transform 0.14s ease;
+      position: relative;
+    }
+
+    .footer-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 100px;
+      padding: 1px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.06) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .footer-cta:hover { background: rgba(255,255,255,0.1); transform: translateY(-1px); }
+
+    /* ═══════════════════════════════════════════════════════════
+       SCROLL REVEAL
+    ═══════════════════════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .about-grid      { grid-template-columns: 1fr; }
+      .about-right     { display: none; }
+      .metrics-grid    { grid-template-columns: repeat(2, 1fr); }
+      .services-grid   { grid-template-columns: 1fr; }
+      .services-header { grid-template-columns: 1fr; gap: 16px; }
+      .footer-top      { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .metrics-grid { grid-template-columns: 1fr; }
+      .footer-top   { grid-template-columns: 1fr; gap: 32px; }
+      .nav-links    { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     STICKY NAV
+════════════════════════════════════════════════ -->
+<div class="nav-bar" id="mainNav">
+  <nav class="nav-inner">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-mark">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <circle cx="7" cy="7" r="3.5" stroke="#06060C" stroke-width="1.8"/>
+          <circle cx="7" cy="7" r="1.4" fill="#06060C"/>
+        </svg>
+      </div>
+      Aeline
+    </a>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#">More</a></li>
+    </ul>
+    <button class="btn-nav">Get Started</button>
+  </nav>
+</div>
+
+
+<!-- ════════════════════════════════════════════════
+     HERO — VIDEO + LIQUID GLASS
+════════════════════════════════════════════════ -->
+<div class="hero-wrap">
+  <video class="hero-video" autoplay loop muted playsinline>
+    <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260315_073750_51473149-4350-4920-ae24-c8214286f323.mp4" type="video/mp4">
+  </video>
+  <div class="hero-video-scrim"></div>
+
+  <div class="hero-panels">
+
+    <!-- LEFT PANEL -->
+    <div class="panel-left">
+      <div class="panel-glass liquid-glass-strong">
+        <nav class="panel-nav">
+          <div class="panel-logo">
+            <div class="panel-logo-mark">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="4" stroke="#06060C" stroke-width="2"/>
+                <circle cx="8" cy="8" r="1.6" fill="#06060C"/>
+              </svg>
+            </div>
+            <span class="panel-logo-txt">Aeline</span>
+          </div>
+          <button class="menu-btn liquid-glass" aria-label="Menu">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="6"  x2="21" y2="6"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+            Menu
+          </button>
+        </nav>
+
+        <div class="panel-hero-center">
+          <div class="panel-logo-large liquid-glass">
+            <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+              <circle cx="18" cy="18" r="10" stroke="rgba(255,255,255,0.7)" stroke-width="2"/>
+              <circle cx="18" cy="18" r="4"  fill="rgba(255,255,255,0.9)"/>
+              <circle cx="18" cy="8"  r="2"  fill="rgba(255,255,255,0.4)"/>
+              <circle cx="18" cy="28" r="2"  fill="rgba(255,255,255,0.4)"/>
+              <circle cx="8"  cy="18" r="2"  fill="rgba(255,255,255,0.4)"/>
+              <circle cx="28" cy="18" r="2"  fill="rgba(255,255,255,0.4)"/>
+            </svg>
+          </div>
+
+          <h1 class="hero-h1">
+            Building the Future<br>
+            <em>with</em> AI and Strategy
+          </h1>
+
+          <p class="hero-sub">
+            We help organizations unlock growth and efficiency through
+            data&#8209;driven consulting and intelligent automation.
+          </p>
+
+          <button class="cta-btn liquid-glass-strong">
+            Get Started
+            <span class="cta-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+            </span>
+          </button>
+
+          <div class="hero-pills">
+            <span class="hero-pill liquid-glass">AI Strategy</span>
+            <span class="hero-pill liquid-glass">Data Intelligence</span>
+            <span class="hero-pill liquid-glass">Process Automation</span>
+          </div>
+        </div>
+
+        <div class="panel-quote">
+          <span class="visionary-label">Visionary Design</span>
+          <p class="quote-text"><em>"We imagined a future with no limits, powered by intelligence."</em></p>
+          <div class="quote-author">
+            <hr><span>Aeline Consulting</span><hr>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="panel-right">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div class="social-bar liquid-glass">
+          <a href="#" class="social-icon-wrap" aria-label="Twitter">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="#" class="social-icon-wrap" aria-label="LinkedIn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="social-icon-wrap" aria-label="Instagram">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <div class="social-divider"></div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </div>
+        <button class="account-btn liquid-glass" aria-label="Account">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+        </button>
+      </div>
+
+      <div class="community-card liquid-glass">
+        <h3>Enter our ecosystem</h3>
+        <p>Join the network of forward-thinking organizations redefining what's possible with AI.</p>
+      </div>
+
+      <div class="feature-outer liquid-glass">
+        <div class="feature-cards-top">
+          <div class="feature-card liquid-glass">
+            <div class="feature-card-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/></svg>
+            </div>
+            <div>
+              <p class="feature-card-title">Processing</p>
+              <p class="feature-card-desc">Real-time AI model inference at scale.</p>
+            </div>
+          </div>
+          <div class="feature-card liquid-glass">
+            <div class="feature-card-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <div>
+              <p class="feature-card-title">Growth Archive</p>
+              <p class="feature-card-desc">Strategy insights & decision intelligence.</p>
+            </div>
+          </div>
+        </div>
+        <div class="feature-bottom-card liquid-glass">
+          <img src="52558.jpg" alt="Advanced AI Solutions" class="feature-thumb">
+          <div class="feature-bottom-text">
+            <h4>Advanced AI Sculpting</h4>
+            <p>Intelligent automation built for scale.</p>
+          </div>
+          <button class="feature-plus-btn liquid-glass">+</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════
+     ABOUT
+════════════════════════════════════════════════ -->
+<section id="about" class="about-section">
+  <div class="section-wrap">
+    <div class="about-inner">
+
+      <!-- Section tag -->
+      <div class="section-tag reveal">
+        <span class="section-tag-dot"></span>
+        <span class="section-tag-num">01</span>
+        <span class="section-tag-label liquid-glass" style="border-radius:100px;">About Us</span>
+      </div>
+
+      <div class="about-grid">
+        <!-- Left: heading + desc -->
+        <div class="about-left">
+          <h2 class="about-heading reveal">
+            A global consulting<br>
+            partner dedicated<br>
+            to building <em>smarter</em>
+          </h2>
+          <p class="about-desc reveal">
+            We help organizations unlock growth and efficiency through
+            data-driven consulting and intelligent automation. Our expertise
+            spans AI strategy, data intelligence, and process automation
+            serving clients across 20+ continents.
+          </p>
+          <a href="#services" class="about-cta liquid-glass reveal" style="border-radius:100px;">
+            Explore Services
+            <span class="about-cta-arrow">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+
+        <!-- Right: image card + stats -->
+        <div class="about-right">
+          <!-- Image card using Lady PNG.png -->
+          <div class="about-img-card reveal">
+            <img src="Lady PNG.png" alt="Our expert" style="mix-blend-mode:luminosity;">
+            <div class="about-img-card-overlay"></div>
+            <div class="about-img-card-badge">
+              <div>
+                <p class="badge-txt">Expert-led consulting</p>
+                <p class="badge-sub">People-first, data-powered</p>
+              </div>
+              <div class="liquid-glass" style="padding:6px 12px;border-radius:100px;font-size:10px;font-weight:500;color:rgba(255,255,255,0.8);letter-spacing:0.06em;text-transform:uppercase;">
+                Since 2019
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats strip -->
+          <div class="about-stats-strip liquid-glass reveal" style="border-radius:20px;">
+            <div class="about-stat-item">
+              <span class="about-stat-num">20+</span>
+              <span class="about-stat-label">Continents</span>
+            </div>
+            <div class="about-stat-divider"></div>
+            <div class="about-stat-item">
+              <span class="about-stat-num">100%</span>
+              <span class="about-stat-label">Commitment</span>
+            </div>
+            <div class="about-stat-divider"></div>
+            <div class="about-stat-item">
+              <span class="about-stat-num">520k+</span>
+              <span class="about-stat-label">Data Points</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-rule"></div>
+
+
+<!-- ════════════════════════════════════════════════
+     METRICS
+════════════════════════════════════════════════ -->
+<section class="metrics-section">
+  <div class="section-wrap">
+
+    <!-- faded bg number -->
+    <span class="bg-num" style="top:-20px;left:-10px;" aria-hidden="true">02</span>
+
+    <div class="metrics-grid" style="position:relative;z-index:1;">
+
+      <!-- Card 1: Tags + 20+ -->
+      <div class="metric-card liquid-glass reveal">
+        <div class="metric-card-tags">
+          <span class="m-tag">Professional</span>
+          <span class="m-tag">Strategic</span>
+          <span class="m-tag">AI-Focus</span>
+          <span class="m-tag">Smarter</span>
+          <span class="m-tag">Data-Driven</span>
+          <span class="m-tag">Startup Feel</span>
+        </div>
+        <div>
+          <p class="metric-sublabel">Continents</p>
+          <p class="metric-num">20+</p>
+        </div>
+      </div>
+
+      <!-- Card 2: 100% -->
+      <div class="metric-card liquid-glass-strong reveal">
+        <p class="metric-sublabel">Commitment to measurable</p>
+        <p class="metric-num" style="margin-top:auto;">100%</p>
+        <p class="metric-desc">Collaborating with leading AI and cloud technology providers worldwide.</p>
+      </div>
+
+      <!-- Card 3: Image + 120+ -->
+      <div class="metric-card-img reveal">
+        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&h=400&fit=crop&auto=format&q=80" alt="Technology" loading="lazy">
+        <div class="metric-card-img-overlay"></div>
+        <div class="metric-card-img-content">
+          <p class="metric-sublabel" style="color:rgba(255,255,255,0.5);">Global Partners</p>
+          <p class="metric-num-white">120+</p>
+          <p class="metric-desc-white">AI partnerships driving innovation at scale.</p>
+        </div>
+      </div>
+
+      <!-- Card 4: 520k+ -->
+      <div class="metric-card liquid-glass reveal">
+        <p class="metric-sublabel">Data Points</p>
+        <p class="metric-num" style="margin-top:auto;">520k+</p>
+        <p class="metric-desc">Analyzed monthly to power smarter business strategies.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════
+     PARTNERS MARQUEE
+════════════════════════════════════════════════ -->
+<div class="marquee-section" aria-hidden="true">
+  <p class="marquee-label">Trusted by industry leaders</p>
+  <div class="marquee-track">
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" fill="rgba(255,255,255,0.7)"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><polygon points="6,1 11,10 1,10" fill="rgba(255,255,255,0.7)"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><rect x="2" y="2" width="8" height="8" rx="2" fill="rgba(255,255,255,0.7)"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M6 1l1.4 3.8H11l-3 2.2 1.1 3.8L6 8.5l-3.1 2.3L4 7l-3-2.2h3.6z" fill="rgba(255,255,255,0.7)"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" fill="none"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 10L6 2L10 10" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="4" width="10" height="4" rx="2" fill="rgba(255,255,255,0.7)"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <!-- duplicate -->
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4" fill="rgba(255,255,255,0.7)"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><polygon points="6,1 11,10 1,10" fill="rgba(255,255,255,0.7)"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><rect x="2" y="2" width="8" height="8" rx="2" fill="rgba(255,255,255,0.7)"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M6 1l1.4 3.8H11l-3 2.2 1.1 3.8L6 8.5l-3.1 2.3L4 7l-3-2.2h3.6z" fill="rgba(255,255,255,0.7)"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><circle cx="6" cy="6" r="5" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" fill="none"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><path d="M2 10L6 2L10 10" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+    <div class="logo-pill"><div class="logo-icon"><svg width="10" height="10" viewBox="0 0 12 12"><rect x="1" y="4" width="10" height="4" rx="2" fill="rgba(255,255,255,0.7)"/></svg></div><span class="logo-pill-txt">Logoipsum</span></div>
+  </div>
+</div>
+
+
+<!-- ════════════════════════════════════════════════
+     SERVICES
+════════════════════════════════════════════════ -->
+<section id="services" class="services-section">
+  <div class="section-wrap">
+    <div class="services-inner">
+
+      <!-- faded bg number -->
+      <span class="bg-num" style="top:-30px;right:-20px;" aria-hidden="true">03</span>
+
+      <!-- Header -->
+      <div class="services-header">
+        <div>
+          <div class="section-tag reveal" style="margin-bottom:28px;">
+            <span class="section-tag-dot"></span>
+            <span class="section-tag-num">03</span>
+            <span class="section-tag-label liquid-glass" style="border-radius:100px;">Services</span>
+          </div>
+          <h2 class="section-heading reveal">
+            What we do best,<br>powered by <em>AI</em>
+          </h2>
+        </div>
+        <p class="services-intro reveal">
+          From strategy to execution — we bring the intelligence
+          and the infrastructure to make it happen at scale.
+        </p>
+      </div>
+
+      <!-- 2×2 glass service cards -->
+      <div class="services-grid">
+
+        <div class="svc-card liquid-glass reveal" tabindex="0">
+          <span class="svc-num">Service — 01</span>
+          <div class="svc-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.6" stroke-linecap="round">
+              <path d="M3 12h4m6 0h4M12 3v4m0 6v4M5.5 5.5l2.8 2.8m3.4 3.4 2.8 2.8M5.5 18.5l2.8-2.8m3.4-3.4 2.8-2.8"/>
+            </svg>
+          </div>
+          <p class="svc-title">AI Strategy & Roadmap</p>
+          <p class="svc-desc">We design AI adoption paths tailored to your organization's maturity, goals, and competitive landscape.</p>
+          <span class="svc-link">
+            Learn more
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8l6-6M8 8V2H2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <div class="svc-card liquid-glass reveal" tabindex="0">
+          <span class="svc-num">Service — 02</span>
+          <div class="svc-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"/>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"/>
+              <rect x="14" y="14" width="7" height="7" rx="1.5" fill="rgba(255,255,255,0.15)"/>
+            </svg>
+          </div>
+          <p class="svc-title">Data Intelligence</p>
+          <p class="svc-desc">Transform raw data into actionable insight with our end-to-end analytics pipelines and BI platforms.</p>
+          <span class="svc-link">
+            Learn more
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8l6-6M8 8V2H2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <div class="svc-card liquid-glass reveal" tabindex="0">
+          <span class="svc-num">Service — 03</span>
+          <div class="svc-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 6v6l4 2"/>
+              <circle cx="12" cy="12" r="9"/>
+            </svg>
+          </div>
+          <p class="svc-title">Process Automation</p>
+          <p class="svc-desc">Eliminate manual bottlenecks with intelligent workflow automation built for scale and resilience.</p>
+          <span class="svc-link">
+            Learn more
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8l6-6M8 8V2H2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+        <div class="svc-card liquid-glass reveal" tabindex="0">
+          <span class="svc-num">Service — 04</span>
+          <div class="svc-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3L19 7v6l-7 4-7-4V7z"/>
+              <path d="M12 3v10M5 7l7 4 7-4"/>
+            </svg>
+          </div>
+          <p class="svc-title">Digital Transformation</p>
+          <p class="svc-desc">End-to-end modernization that replaces legacy systems with AI-ready, cloud-native infrastructure.</p>
+          <span class="svc-link">
+            Learn more
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8l6-6M8 8V2H2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="section-wrap">
+    <div class="footer-inner">
+
+      <div class="footer-top">
+
+        <!-- Brand -->
+        <div class="footer-brand reveal">
+          <div class="footer-logo">
+            <div class="footer-logo-mark">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <circle cx="7" cy="7" r="3.5" stroke="#04040A" stroke-width="1.8"/>
+                <circle cx="7" cy="7" r="1.4" fill="#04040A"/>
+              </svg>
+            </div>
+            Aeline
+          </div>
+          <p class="footer-tagline">
+            We help organizations unlock growth and efficiency through data-driven consulting and intelligent automation.
+          </p>
+          <div class="footer-social">
+            <a href="#" class="footer-social-btn" aria-label="Twitter">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="#" class="footer-social-btn" aria-label="LinkedIn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" class="footer-social-btn" aria-label="Instagram">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col: Company -->
+        <div class="footer-col reveal">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Services</a></li>
+            <li><a href="#">Case Studies</a></li>
+            <li><a href="#">Careers</a></li>
+          </ul>
+        </div>
+
+        <!-- Col: Resources -->
+        <div class="footer-col reveal">
+          <h4>Resources</h4>
+          <ul>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Whitepapers</a></li>
+            <li><a href="#">Webinars</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+
+        <!-- Col: Connect -->
+        <div class="footer-col reveal">
+          <h4>Connect</h4>
+          <ul>
+            <li><a href="#">LinkedIn</a></li>
+            <li><a href="#">Twitter / X</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">Contact Us</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2026 Aeline. All rights reserved.</span>
+        <a href="#" class="footer-cta">
+          Get Started
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+
+<!-- ════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════ -->
+<script>
+  /* Sticky nav visibility */
+  const mainNav  = document.getElementById('mainNav');
+  const heroWrap = document.querySelector('.hero-wrap');
+  const onScroll = () => {
+    const t = heroWrap ? heroWrap.offsetHeight * 0.85 : window.innerHeight * 0.85;
+    mainNav.classList.toggle('visible', window.scrollY > t);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  /* Scroll reveal */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.transitionDelay = (i % 3) * 90 + 'ms';
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
