@@ -1826,18 +1826,26 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      z-index: 2;
     }
 
-    .cta-final-glow {
+    /* WebGL canvas — full-bleed behind content */
+    #ctaShaderCanvas {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -55%);
-      width: 720px;
-      height: 380px;
-      background: radial-gradient(ellipse, rgba(64,122,94,0.15) 0%, transparent 68%);
-      pointer-events: none;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
       z-index: 0;
+    }
+
+    /* Dark overlay so waves don't compete with text */
+    .cta-shader-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(6,6,12,0.72);
+      z-index: 1;
+      pointer-events: none;
     }
 
     .cta-final-inner .section-tag  { margin-bottom: 28px; position: relative; z-index: 1; }
@@ -1854,7 +1862,7 @@
       font-family: 'Poppins', sans-serif;
       font-size: 15px;
       line-height: 1.8;
-      color: rgba(255,255,255,0.48);
+      color: #ffffff;
       max-width: 500px;
       margin: 0 auto 52px;
       position: relative;
@@ -2560,10 +2568,12 @@
 <div class="section-rule"></div>
 
 <section class="cta-final-section">
+  <!-- WebGL animated background -->
+  <canvas id="ctaShaderCanvas" aria-hidden="true"></canvas>
+  <div class="cta-shader-overlay" aria-hidden="true"></div>
+
   <div class="section-wrap">
     <div class="cta-final-inner">
-
-      <div class="cta-final-glow" aria-hidden="true"></div>
 
       <div class="section-tag reveal">
         <span class="section-tag-dot"></span>
@@ -2982,6 +2992,115 @@
     }
 
     requestAnimationFrame(function() { requestAnimationFrame(setup); });
+  })();
+
+  /* ─── CTA Section: WebGL Wave Shader (brand-green tones) ─── */
+  (function () {
+    var canvas = document.getElementById('ctaShaderCanvas');
+    if (!canvas) return;
+
+    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+    if (!gl) return;
+
+    var VS = [
+      'attribute vec2 a_pos;',
+      'void main(){gl_Position=vec4(a_pos,0.0,1.0);}'
+    ].join('\n');
+
+    /* Brand color shades (normalized):
+       #407A5E = (0.251, 0.478, 0.369)  — primary
+       #5EA882 = (0.369, 0.659, 0.510)  — light
+       #2D5A42 = (0.176, 0.353, 0.259)  — dark      */
+    var FS = [
+      'precision highp float;',
+      'uniform vec2  u_res;',
+      'uniform float u_t;',
+      'void main(){',
+      '  vec2 p=(gl_FragCoord.xy*2.0-u_res)/min(u_res.x,u_res.y);',
+      '  float xS=1.15,yS=0.38,dst=0.07;',
+      '  float d=length(p)*dst;',
+      '  float r=0.032/abs(p.y+sin((p.x*(1.0+d)+u_t)*xS)*yS);',
+      '  float g=0.042/abs(p.y+sin((p.x          +u_t)*xS)*yS);',
+      '  float b=0.028/abs(p.y+sin((p.x*(1.0-d)+u_t)*xS)*yS);',
+      /* Tint each channel with brand green shades */
+      '  vec3 col = vec3(0.251,0.478,0.369)*g',
+      '           + vec3(0.369,0.659,0.510)*r*0.7',
+      '           + vec3(0.176,0.353,0.259)*b*0.55;',
+      '  col = clamp(col*0.9, 0.0, 1.0);',
+      '  gl_FragColor=vec4(col,1.0);',
+      '}'
+    ].join('\n');
+
+    function mkShader(type, src) {
+      var s = gl.createShader(type);
+      gl.shaderSource(s, src);
+      gl.compileShader(s);
+      return gl.getShaderParameter(s, gl.COMPILE_STATUS) ? s : null;
+    }
+
+    var vs = mkShader(gl.VERTEX_SHADER, VS);
+    var fs = mkShader(gl.FRAGMENT_SHADER, FS);
+    if (!vs || !fs) return;
+
+    var prog = gl.createProgram();
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return;
+    gl.useProgram(prog);
+
+    /* Full-screen quad */
+    var buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER,
+      new Float32Array([-1,-1, 1,-1, -1,1, 1,-1, -1,1, 1,1]),
+      gl.STATIC_DRAW);
+    var posLoc = gl.getAttribLocation(prog, 'a_pos');
+    gl.enableVertexAttribArray(posLoc);
+    gl.vertexAttribPointer(posLoc, 2, gl.FLOAT, false, 0, 0);
+
+    var uRes = gl.getUniformLocation(prog, 'u_res');
+    var uT   = gl.getUniformLocation(prog, 'u_t');
+
+    function resize() {
+      var section = canvas.parentElement;
+      var w = section.offsetWidth;
+      var h = section.offsetHeight;
+      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width  = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      gl.viewport(0, 0, canvas.width, canvas.height);
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+    }
+
+    var t = 0, rafId = null, visible = false;
+
+    function render() {
+      t += 0.006;
+      gl.uniform1f(uT, t);
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      if (visible) rafId = requestAnimationFrame(render);
+    }
+
+    function start() { if (!rafId) { rafId = requestAnimationFrame(render); } }
+    function stop()  { if (rafId)  { cancelAnimationFrame(rafId); rafId = null; } }
+
+    resize();
+    window.addEventListener('resize', function() { resize(); });
+
+    /* Only animate when section is in view — saves CPU/battery */
+    if (typeof IntersectionObserver !== 'undefined') {
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          visible = e.isIntersecting;
+          visible ? start() : stop();
+        });
+      }, { threshold: 0.01 });
+      io.observe(canvas);
+    } else {
+      visible = true;
+      start();
+    }
   })();
 </script>
 
