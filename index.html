@@ -1343,6 +1343,81 @@
     .footer-cta:hover { background: rgba(255,255,255,0.1); transform: translateY(-1px); }
 
     /* ═══════════════════════════════════════════════════════════
+       SHINY BUTTON HOVER — brand #407A5E
+       Applied only to .shiny-hover elements.
+       Uses ::after so it never conflicts with existing ::before borders.
+    ═══════════════════════════════════════════════════════════ */
+    @property --shine-angle {
+      syntax: "<angle>";
+      initial-value: 0deg;
+      inherits: false;
+    }
+    @property --shine-offset {
+      syntax: "<angle>";
+      initial-value: 0deg;
+      inherits: false;
+    }
+    @property --shine-pct {
+      syntax: "<percentage>";
+      initial-value: 5%;
+      inherits: false;
+    }
+    @property --shine-color {
+      syntax: "<color>";
+      initial-value: white;
+      inherits: false;
+    }
+
+    @keyframes shine-spin {
+      to { --shine-angle: 360deg; }
+    }
+
+    .shiny-hover {
+      --brand:       #407A5E;
+      --brand-light: #6BAF8A;
+      --shine-dur:   3s;
+      --shine-ease:  800ms cubic-bezier(0.25, 1, 0.5, 1);
+      transition-property: --shine-offset, --shine-pct, --shine-color, transform, background, box-shadow !important;
+      transition-duration: var(--shine-ease) !important;
+    }
+
+    .shiny-hover::after {
+      content: '';
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: conic-gradient(
+        from calc(var(--shine-angle) - var(--shine-offset)),
+        transparent,
+        var(--brand)       var(--shine-pct),
+        var(--shine-color) calc(var(--shine-pct) * 2),
+        var(--brand)       calc(var(--shine-pct) * 3),
+        transparent        calc(var(--shine-pct) * 4)
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity var(--shine-ease);
+      animation: shine-spin var(--shine-dur) linear infinite paused;
+      z-index: 2;
+    }
+
+    .shiny-hover:is(:hover, :focus-visible) {
+      --shine-pct:    20%;
+      --shine-offset: 95deg;
+      --shine-color:  var(--brand-light);
+      box-shadow: 0 0 14px rgba(64, 122, 94, 0.3), 0 0 28px rgba(64, 122, 94, 0.12);
+    }
+
+    .shiny-hover:is(:hover, :focus-visible)::after {
+      opacity: 1;
+      animation-play-state: running;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
        SCROLL REVEAL
     ═══════════════════════════════════════════════════════════ */
     .reveal {
@@ -1394,7 +1469,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#">More</a></li>
     </ul>
-    <button class="btn-nav">Get Started</button>
+    <button class="btn-nav shiny-hover">Get Started</button>
   </nav>
 </div>
 
@@ -1455,7 +1530,7 @@
             data&#8209;driven consulting and intelligent automation.
           </p>
 
-          <button class="cta-btn liquid-glass-strong">
+          <button class="cta-btn liquid-glass-strong shiny-hover">
             Get Started
             <span class="cta-icon">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1573,7 +1648,7 @@
             spans AI strategy, data intelligence, and process automation
             serving clients across 20+ continents.
           </p>
-          <a href="#services" class="about-cta liquid-glass reveal" style="border-radius:100px;">
+          <a href="#services" class="about-cta liquid-glass reveal shiny-hover" style="border-radius:100px;">
             Explore Services
             <span class="about-cta-arrow">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1886,7 +1961,7 @@
       <!-- Bottom bar -->
       <div class="footer-bottom">
         <span class="footer-copy">© 2026 Aeline. All rights reserved.</span>
-        <a href="#" class="footer-cta">
+        <a href="#" class="footer-cta shiny-hover">
           Get Started
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
