@@ -1748,12 +1748,9 @@
 
     #svcGlobeCanvas {
       display: block;
-      cursor: grab;
       border-radius: 50%;
       box-shadow: 0 0 32px rgba(64,122,94,0.18), 0 0 8px rgba(64,122,94,0.1);
     }
-
-    #svcGlobeCanvas:active { cursor: grabbing; }
 
     @media (max-width: 1024px) {
       .svc-globe-wrap { max-height: 200px; }
@@ -2597,14 +2594,11 @@
     });
   })();
 
-  /* ─── Service Card 1: Wireframe Dotted Globe ─── */
+  /* ─── Service Card 1: Static Wireframe Globe ─── */
   (function () {
     var canvas, wrap, ctx, size, radius, projection, pathGen;
-    var allDots = [], landFeatures = null, rotTimer = null;
-    var rotation   = [0, -20];
-    var autoRotate = true;
-    var SPEED      = 0.22;
-    var ready      = false;
+    var allDots = [], ready = false;
+    var ROTATION = [20, -30]; /* fixed view angle */
 
     function setup() {
       canvas = document.getElementById('svcGlobeCanvas');
@@ -2612,7 +2606,6 @@
       if (!canvas || !wrap || typeof d3 === 'undefined') return;
 
       ctx = canvas.getContext('2d');
-
       var rect = wrap.getBoundingClientRect();
       size = Math.floor(rect.width);
       if (size < 20) { requestAnimationFrame(setup); return; }
@@ -2625,18 +2618,16 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       radius = size * 0.43;
-
       projection = d3.geoOrthographic()
         .scale(radius)
         .translate([size / 2, size / 2])
+        .rotate(ROTATION)
         .clipAngle(90);
-
       pathGen = d3.geoPath().projection(projection).context(ctx);
 
       ready = true;
-      startRotation();
+      render(); /* draw bare globe while data loads */
       loadData();
-      attachDrag();
     }
 
     function ptInRing(pt, ring) {
@@ -2663,14 +2654,10 @@
     }
 
     function genDots(feat) {
-      var dots = [];
-      var b = d3.geoBounds(feat);
-      var step = 1.3;
-      for (var lng = b[0][0]; lng <= b[1][0]; lng += step) {
-        for (var lat = b[0][1]; lat <= b[1][1]; lat += step) {
+      var dots = [], b = d3.geoBounds(feat), step = 1.3;
+      for (var lng = b[0][0]; lng <= b[1][0]; lng += step)
+        for (var lat = b[0][1]; lat <= b[1][1]; lat += step)
           if (ptInFeature([lng, lat], feat)) dots.push({ lng: lng, lat: lat });
-        }
-      }
       return dots;
     }
 
@@ -2687,23 +2674,23 @@
       ctx.fillStyle = '#030609';
       ctx.fillRect(0, 0, size, size);
 
-      if (landFeatures) {
-        /* Graticule */
-        ctx.beginPath();
-        pathGen(d3.geoGraticule()());
-        ctx.strokeStyle = 'rgba(255,255,255,0.07)';
-        ctx.lineWidth = 0.5;
-        ctx.stroke();
+      /* Graticule */
+      ctx.beginPath();
+      pathGen(d3.geoGraticule()());
+      ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
 
+      if (window._svcLandFeatures) {
         /* Land fill */
         ctx.beginPath();
-        landFeatures.features.forEach(function(f) { pathGen(f); });
+        window._svcLandFeatures.features.forEach(function(f) { pathGen(f); });
         ctx.fillStyle = 'rgba(45,75,60,0.5)';
         ctx.fill();
 
         /* Land outline */
         ctx.beginPath();
-        landFeatures.features.forEach(function(f) { pathGen(f); });
+        window._svcLandFeatures.features.forEach(function(f) { pathGen(f); });
         ctx.strokeStyle = 'rgba(64,122,94,0.55)';
         ctx.lineWidth = 0.65;
         ctx.stroke();
@@ -2721,7 +2708,7 @@
 
       ctx.restore();
 
-      /* Globe border */
+      /* Globe border ring */
       ctx.beginPath();
       ctx.arc(size / 2, size / 2, radius, 0, 2 * Math.PI);
       ctx.strokeStyle = 'rgba(64,122,94,0.4)';
@@ -2733,46 +2720,15 @@
       fetch('https://raw.githubusercontent.com/martynafford/natural-earth-geojson/refs/heads/master/110m/physical/ne_110m_land.json')
         .then(function(r) { return r.json(); })
         .then(function(data) {
-          landFeatures = data;
+          window._svcLandFeatures = data;
           data.features.forEach(function(f) {
             genDots(f).forEach(function(d) { allDots.push(d); });
           });
+          render(); /* single repaint once data is ready */
         })
-        .catch(function() { /* bare globe still spins */ });
+        .catch(function() { /* bare globe outline already visible */ });
     }
 
-    function startRotation() {
-      if (rotTimer) rotTimer.stop();
-      rotTimer = d3.timer(function() {
-        if (autoRotate) {
-          rotation[0] += SPEED;
-          projection.rotate(rotation);
-        }
-        render();
-      });
-    }
-
-    function attachDrag() {
-      canvas.addEventListener('mousedown', function(e) {
-        autoRotate = false;
-        var sx = e.clientX, sy = e.clientY, sr = rotation.slice();
-        function onMove(ev) {
-          rotation[0] = sr[0] + (ev.clientX - sx) * 0.45;
-          rotation[1] = Math.max(-90, Math.min(90, sr[1] - (ev.clientY - sy) * 0.45));
-          projection.rotate(rotation);
-          render();
-        }
-        function onUp() {
-          document.removeEventListener('mousemove', onMove);
-          document.removeEventListener('mouseup', onUp);
-          setTimeout(function() { autoRotate = true; }, 120);
-        }
-        document.addEventListener('mousemove', onMove);
-        document.addEventListener('mouseup', onUp);
-      });
-    }
-
-    /* Defer two frames so flex layout has resolved */
     requestAnimationFrame(function() { requestAnimationFrame(setup); });
   })();
 </script>
