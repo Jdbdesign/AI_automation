@@ -1811,6 +1811,128 @@
     }
 
     /* ═══════════════════════════════════════════════════════════
+       CTA FINAL SECTION
+    ═══════════════════════════════════════════════════════════ */
+    .cta-final-section {
+      background: #06060C;
+      padding: 140px 0;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .cta-final-inner {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .cta-final-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      width: 720px;
+      height: 380px;
+      background: radial-gradient(ellipse, rgba(64,122,94,0.15) 0%, transparent 68%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .cta-final-inner .section-tag  { margin-bottom: 28px; position: relative; z-index: 1; }
+
+    .cta-final-heading {
+      font-size: clamp(40px, 5.2vw, 72px) !important;
+      line-height: 1.1 !important;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-final-subtext {
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.48);
+      max-width: 500px;
+      margin: 0 auto 52px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-final-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-final-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 100px;
+      background: #407A5E;
+      border: none;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: #ffffff;
+      text-decoration: none;
+      transition: background 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+      letter-spacing: 0.01em;
+    }
+
+    .cta-final-btn:hover {
+      background: #4d9070;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 36px rgba(64,122,94,0.45);
+    }
+
+    .cta-final-btn:active { transform: translateY(0); }
+
+    .cta-final-btn-icon {
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.22s ease;
+    }
+
+    .cta-final-btn:hover .cta-final-btn-icon { background: rgba(255,255,255,0.26); }
+
+    .cta-final-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.48);
+      text-decoration: none;
+      transition: color 0.22s ease;
+      letter-spacing: 0.01em;
+    }
+
+    .cta-final-link:hover { color: rgba(255,255,255,0.85); }
+
+    @media (max-width: 768px) {
+      .cta-final-section { padding: 100px 0; }
+      .cta-final-heading { font-size: 36px !important; }
+      .cta-final-subtext { font-size: 14px; }
+      .cta-final-actions { flex-direction: column; gap: 16px; }
+    }
+
+    /* ═══════════════════════════════════════════════════════════
        SERVICE CARD 1 — animated wireframe globe
     ═══════════════════════════════════════════════════════════ */
     .svc-globe-wrap {
@@ -2427,6 +2549,54 @@
         </div>
 
       </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════
+     CTA FINAL
+════════════════════════════════════════════════ -->
+<div class="section-rule"></div>
+
+<section class="cta-final-section">
+  <div class="section-wrap">
+    <div class="cta-final-inner">
+
+      <div class="cta-final-glow" aria-hidden="true"></div>
+
+      <div class="section-tag reveal">
+        <span class="section-tag-dot"></span>
+        <span class="section-tag-label liquid-glass" style="border-radius:100px;">Get Started</span>
+      </div>
+
+      <h2 class="section-heading cta-final-heading reveal">
+        Ready to build your<br><em>AI advantage?</em>
+      </h2>
+
+      <p class="cta-final-subtext reveal">
+        Most companies are still figuring out where to start.<br>
+        Aeline gives you the clarity, strategy, and execution<br>
+        to move faster than the competition — from day one.
+      </p>
+
+      <div class="cta-final-actions reveal">
+        <a href="#" class="cta-final-btn">
+          Book a Strategy Call
+          <span class="cta-final-btn-icon">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </span>
+        </a>
+        <a href="#services" class="cta-final-link">
+          Explore our services
+          <svg width="11" height="11" viewBox="0 0 10 10" fill="none">
+            <path d="M2 8l6-6M8 8V2H2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
     </div>
   </div>
 </section>
