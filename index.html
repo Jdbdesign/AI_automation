@@ -1446,6 +1446,42 @@
       .footer-top   { grid-template-columns: 1fr; gap: 32px; }
       .nav-links    { display: none; }
     }
+
+    /* ═══════════════════════════════════════════════════════════
+       GRADIENT ANIMATION BORDER
+    ═══════════════════════════════════════════════════════════ */
+    @property --gradient-angle {
+      syntax: '<angle>';
+      initial-value: 0deg;
+      inherits: false;
+    }
+
+    @keyframes gradient-border-rotate {
+      0%   { --gradient-angle: 0deg; }
+      100% { --gradient-angle: 360deg; }
+    }
+
+    .gradient-border-wrap {
+      padding: 2px;
+      background: conic-gradient(
+        from var(--gradient-angle),
+        #2D5A42 0%,
+        #407A5E 20%,
+        #5EA882 40%,
+        #9FDBBC 50%,
+        #5EA882 60%,
+        #407A5E 80%,
+        #2D5A42 100%
+      );
+      animation: gradient-border-rotate 5s linear infinite;
+      box-shadow: 0 0 24px rgba(64, 122, 94, 0.18), 0 0 8px rgba(64, 122, 94, 0.1);
+    }
+
+    .gradient-border-wrap > .metric-card,
+    .gradient-border-wrap > .metric-card-img,
+    .gradient-border-wrap > .about-stats-strip {
+      background: #000000;
+    }
   </style>
 </head>
 <body>
@@ -1678,20 +1714,22 @@
           </div>
 
           <!-- Stats strip -->
-          <div class="about-stats-strip liquid-glass reveal" style="border-radius:20px;">
-            <div class="about-stat-item">
-              <span class="about-stat-num">20+</span>
-              <span class="about-stat-label">Continents</span>
-            </div>
-            <div class="about-stat-divider"></div>
-            <div class="about-stat-item">
-              <span class="about-stat-num">100%</span>
-              <span class="about-stat-label">Commitment</span>
-            </div>
-            <div class="about-stat-divider"></div>
-            <div class="about-stat-item">
-              <span class="about-stat-num">520k+</span>
-              <span class="about-stat-label">Data Points</span>
+          <div class="gradient-border-wrap reveal" style="border-radius:22px;">
+            <div class="about-stats-strip liquid-glass" style="border-radius:20px;">
+              <div class="about-stat-item">
+                <span class="about-stat-num">20+</span>
+                <span class="about-stat-label">Continents</span>
+              </div>
+              <div class="about-stat-divider"></div>
+              <div class="about-stat-item">
+                <span class="about-stat-num">100%</span>
+                <span class="about-stat-label">Commitment</span>
+              </div>
+              <div class="about-stat-divider"></div>
+              <div class="about-stat-item">
+                <span class="about-stat-num">520k+</span>
+                <span class="about-stat-label">Data Points</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1716,44 +1754,52 @@
     <div class="metrics-grid" style="position:relative;z-index:1;">
 
       <!-- Card 1: Tags + 20+ -->
-      <div class="metric-card liquid-glass reveal">
-        <div class="metric-card-tags">
-          <span class="m-tag">Professional</span>
-          <span class="m-tag">Strategic</span>
-          <span class="m-tag">AI-Focus</span>
-          <span class="m-tag">Smarter</span>
-          <span class="m-tag">Data-Driven</span>
-          <span class="m-tag">Startup Feel</span>
-        </div>
-        <div>
-          <p class="metric-sublabel">Continents</p>
-          <p class="metric-num">20+</p>
+      <div class="gradient-border-wrap reveal" style="border-radius:24px;">
+        <div class="metric-card liquid-glass" style="border-radius:22px;">
+          <div class="metric-card-tags">
+            <span class="m-tag">Professional</span>
+            <span class="m-tag">Strategic</span>
+            <span class="m-tag">AI-Focus</span>
+            <span class="m-tag">Smarter</span>
+            <span class="m-tag">Data-Driven</span>
+            <span class="m-tag">Startup Feel</span>
+          </div>
+          <div>
+            <p class="metric-sublabel">Continents</p>
+            <p class="metric-num">20+</p>
+          </div>
         </div>
       </div>
 
       <!-- Card 2: 100% -->
-      <div class="metric-card liquid-glass-strong reveal">
-        <p class="metric-sublabel">Commitment to measurable</p>
-        <p class="metric-num" style="margin-top:auto;">100%</p>
-        <p class="metric-desc">Collaborating with leading AI and cloud technology providers worldwide.</p>
+      <div class="gradient-border-wrap reveal" style="border-radius:24px;">
+        <div class="metric-card liquid-glass-strong" style="border-radius:22px;">
+          <p class="metric-sublabel">Commitment to measurable</p>
+          <p class="metric-num" style="margin-top:auto;">100%</p>
+          <p class="metric-desc">Collaborating with leading AI and cloud technology providers worldwide.</p>
+        </div>
       </div>
 
       <!-- Card 3: Image + 120+ -->
-      <div class="metric-card-img reveal">
-        <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&h=400&fit=crop&auto=format&q=80" alt="Technology" loading="lazy">
-        <div class="metric-card-img-overlay"></div>
-        <div class="metric-card-img-content">
-          <p class="metric-sublabel" style="color:rgba(255,255,255,0.5);">Global Partners</p>
-          <p class="metric-num-white">120+</p>
-          <p class="metric-desc-white">AI partnerships driving innovation at scale.</p>
+      <div class="gradient-border-wrap reveal" style="border-radius:24px;">
+        <div class="metric-card-img" style="border-radius:22px;">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&h=400&fit=crop&auto=format&q=80" alt="Technology" loading="lazy">
+          <div class="metric-card-img-overlay"></div>
+          <div class="metric-card-img-content">
+            <p class="metric-sublabel" style="color:rgba(255,255,255,0.5);">Global Partners</p>
+            <p class="metric-num-white">120+</p>
+            <p class="metric-desc-white">AI partnerships driving innovation at scale.</p>
+          </div>
         </div>
       </div>
 
       <!-- Card 4: 520k+ -->
-      <div class="metric-card liquid-glass reveal">
-        <p class="metric-sublabel">Data Points</p>
-        <p class="metric-num" style="margin-top:auto;">520k+</p>
-        <p class="metric-desc">Analyzed monthly to power smarter business strategies.</p>
+      <div class="gradient-border-wrap reveal" style="border-radius:24px;">
+        <div class="metric-card liquid-glass" style="border-radius:22px;">
+          <p class="metric-sublabel">Data Points</p>
+          <p class="metric-num" style="margin-top:auto;">520k+</p>
+          <p class="metric-desc">Analyzed monthly to power smarter business strategies.</p>
+        </div>
       </div>
 
     </div>
