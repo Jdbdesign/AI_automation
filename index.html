@@ -1106,12 +1106,60 @@
       align-self: end;
     }
 
-    /* Services cards: 2x2 wide */
+    /* Services: bento 3-column grid */
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1.15fr 1fr 1fr;
+      grid-template-rows: minmax(280px, auto) minmax(200px, auto);
       gap: 14px;
     }
+
+    /* Bento placement */
+    .svc-bento-1 { grid-column: 1; grid-row: 1 / 3; }
+    .svc-bento-2 { grid-column: 2; grid-row: 1; }
+    .svc-bento-3 { grid-column: 3; grid-row: 1; }
+    .svc-bento-6 { grid-column: 2 / 4; grid-row: 2; }
+
+    /* All bento cards: clear inherited min-height */
+    .svc-bento-1, .svc-bento-2, .svc-bento-3,
+    .svc-bento-6 { min-height: unset; }
+
+    /* Tall featured card (col 1, all rows) */
+    .svc-bento-1::after {
+      content: '';
+      position: absolute;
+      width: 280px; height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(64,122,94,0.12) 0%, transparent 65%);
+      top: 48%; left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .svc-bento-1 .svc-num,
+    .svc-bento-1 .svc-icon-wrap,
+    .svc-bento-1 .svc-tall-content { position: relative; z-index: 1; }
+    .svc-bento-1 .svc-num   { margin-bottom: 16px; }
+    .svc-bento-1 .svc-tall-content { margin-top: auto; }
+    .svc-bento-1 .svc-title { font-size: 24px; }
+
+    /* Wide bottom card (col 2-3, row 3) — horizontal layout */
+    .svc-bento-6 {
+      flex-direction: row;
+      align-items: center;
+      gap: 28px;
+    }
+    .svc-wide-icon-block {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .svc-wide-icon-block .svc-num   { margin-bottom: 0; }
+    .svc-wide-icon-block .svc-icon-wrap { margin-bottom: 0; }
+    .svc-wide-body { flex: 1; }
+    .svc-bento-6 .svc-title { font-size: 18px; margin-bottom: 10px; }
+    .svc-bento-6 .svc-link  { margin-top: 0; flex-shrink: 0; align-self: center; }
 
     .svc-card {
       border-radius: 24px;
@@ -1436,15 +1484,35 @@
       .about-grid      { grid-template-columns: 1fr; }
       .about-right     { display: none; }
       .metrics-grid    { grid-template-columns: repeat(2, 1fr); }
-      .services-grid   { grid-template-columns: 1fr; }
+      .services-grid   {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: auto;
+      }
+      .svc-bento-1, .svc-bento-2, .svc-bento-3 {
+        grid-column: auto;
+        grid-row: auto;
+        min-height: 260px;
+      }
+      .svc-bento-6 {
+        grid-column: span 2;
+        grid-row: auto;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+      }
+      .svc-bento-1 .svc-tall-content { margin-top: 0; }
+      .svc-bento-1 .svc-title { font-size: 20px; }
+      .svc-wide-icon-block .svc-num   { margin-bottom: 0; }
       .services-header { grid-template-columns: 1fr; gap: 16px; }
       .footer-top      { grid-template-columns: 1fr 1fr; }
     }
 
     @media (max-width: 768px) {
       .metrics-grid { grid-template-columns: 1fr; }
-      .footer-top   { grid-template-columns: 1fr; gap: 32px; }
-      .nav-links    { display: none; }
+      .services-grid { grid-template-columns: 1fr; }
+      .svc-bento-6   { grid-column: auto; }
+      .footer-top    { grid-template-columns: 1fr; gap: 32px; }
+      .nav-links     { display: none; }
     }
 
     /* ═══════════════════════════════════════════════════════════
@@ -1860,25 +1928,29 @@
         </p>
       </div>
 
-      <!-- 2×2 glass service cards -->
+      <!-- Bento 3-col × 3-row service cards -->
       <div class="services-grid">
 
-        <div class="svc-card liquid-glass reveal" tabindex="0">
+        <!-- Card 1: Tall featured — AI Strategy (col 1, all rows) -->
+        <div class="svc-card liquid-glass reveal svc-bento-1" tabindex="0">
           <span class="svc-num">Service — 01</span>
           <div class="svc-icon-wrap">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.6" stroke-linecap="round">
               <path d="M3 12h4m6 0h4M12 3v4m0 6v4M5.5 5.5l2.8 2.8m3.4 3.4 2.8 2.8M5.5 18.5l2.8-2.8m3.4-3.4 2.8-2.8"/>
             </svg>
           </div>
-          <p class="svc-title">AI Strategy & Roadmap</p>
-          <p class="svc-desc">We design AI adoption paths tailored to your organization's maturity, goals, and competitive landscape.</p>
-          <span class="svc-link">
-            Learn more
-            <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8l6-6M8 8V2H2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
+          <div class="svc-tall-content">
+            <p class="svc-title">AI Strategy & Roadmap</p>
+            <p class="svc-desc">We design AI adoption paths tailored to your organization's maturity, goals, and competitive landscape — from quick wins to multi-year transformation.</p>
+            <span class="svc-link">
+              Learn more
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8l6-6M8 8V2H2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
         </div>
 
-        <div class="svc-card liquid-glass reveal" tabindex="0">
+        <!-- Card 2: Top middle — Data Intelligence -->
+        <div class="svc-card liquid-glass reveal svc-bento-2" tabindex="0">
           <span class="svc-num">Service — 02</span>
           <div class="svc-icon-wrap">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -1889,14 +1961,15 @@
             </svg>
           </div>
           <p class="svc-title">Data Intelligence</p>
-          <p class="svc-desc">Transform raw data into actionable insight with our end-to-end analytics pipelines and BI platforms.</p>
+          <p class="svc-desc">Transform raw data into actionable insight with end-to-end analytics pipelines and BI platforms.</p>
           <span class="svc-link">
             Learn more
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8l6-6M8 8V2H2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </span>
         </div>
 
-        <div class="svc-card liquid-glass reveal" tabindex="0">
+        <!-- Card 3: Top right — Process Automation -->
+        <div class="svc-card liquid-glass reveal svc-bento-3" tabindex="0">
           <span class="svc-num">Service — 03</span>
           <div class="svc-icon-wrap">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -1912,16 +1985,20 @@
           </span>
         </div>
 
-        <div class="svc-card liquid-glass reveal" tabindex="0">
-          <span class="svc-num">Service — 04</span>
-          <div class="svc-icon-wrap">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 3L19 7v6l-7 4-7-4V7z"/>
-              <path d="M12 3v10M5 7l7 4 7-4"/>
-            </svg>
+        <!-- Card 4: Wide bottom — AI Governance & Ethics (col 2-3, row 2) -->
+        <div class="svc-card liquid-glass reveal svc-bento-6" tabindex="0">
+          <div class="svc-wide-icon-block">
+            <span class="svc-num">Service — 06</span>
+            <div class="svc-icon-wrap">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+            </div>
           </div>
-          <p class="svc-title">Digital Transformation</p>
-          <p class="svc-desc">End-to-end modernization that replaces legacy systems with AI-ready, cloud-native infrastructure.</p>
+          <div class="svc-wide-body">
+            <p class="svc-title">AI Governance & Ethics</p>
+            <p class="svc-desc">Establish responsible AI frameworks, compliance protocols, and transparent governance structures that build trust and ensure long-term organisational integrity.</p>
+          </div>
           <span class="svc-link">
             Learn more
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 8l6-6M8 8V2H2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
