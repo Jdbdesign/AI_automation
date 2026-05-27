@@ -1159,7 +1159,7 @@
     .svc-bento-1 .svc-icon-wrap,
     .svc-bento-1 .svc-tall-content { position: relative; z-index: 1; }
     .svc-bento-1 .svc-num   { margin-bottom: 16px; }
-    .svc-bento-1 .svc-tall-content { margin-top: auto; }
+    .svc-bento-1 .svc-tall-content { margin-top: 0; }
     .svc-bento-1 .svc-title { font-size: 24px; }
 
     /* Wide bottom card (col 2-3, row 2) — left-aligned column layout */
@@ -1730,6 +1730,38 @@
     .gradient-border-wrap > .about-stats-strip {
       background: #000000;
     }
+
+    /* ═══════════════════════════════════════════════════════════
+       SERVICE CARD 1 — animated wireframe globe
+    ═══════════════════════════════════════════════════════════ */
+    .svc-globe-wrap {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+      width: 100%;
+      margin: 14px 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #svcGlobeCanvas {
+      display: block;
+      cursor: grab;
+      border-radius: 50%;
+      box-shadow: 0 0 32px rgba(64,122,94,0.18), 0 0 8px rgba(64,122,94,0.1);
+    }
+
+    #svcGlobeCanvas:active { cursor: grabbing; }
+
+    @media (max-width: 1024px) {
+      .svc-globe-wrap { max-height: 200px; }
+    }
+
+    @media (max-width: 768px) {
+      .svc-globe-wrap { max-height: 160px; margin: 8px 0; }
+    }
   </style>
 </head>
 <body>
@@ -2177,6 +2209,10 @@
               <path d="M3 12h4m6 0h4M12 3v4m0 6v4M5.5 5.5l2.8 2.8m3.4 3.4 2.8 2.8M5.5 18.5l2.8-2.8m3.4-3.4 2.8-2.8"/>
             </svg>
           </div>
+          <!-- Animated wireframe globe -->
+          <div class="svc-globe-wrap" id="svcGlobeWrap">
+            <canvas id="svcGlobeCanvas"></canvas>
+          </div>
           <div class="svc-tall-content">
             <p class="svc-title">AI Strategy & Roadmap</p>
             <p class="svc-desc">We design AI adoption paths tailored to your organization's maturity, goals, and competitive landscape — from quick wins to multi-year transformation.</p>
@@ -2405,6 +2441,9 @@
 </footer>
 
 
+<!-- D3.js for service globe visualization -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+
 <!-- ════════════════════════════════════════════════
      JAVASCRIPT
 ════════════════════════════════════════════════ -->
@@ -2556,6 +2595,185 @@
       if (e.key === 'ArrowLeft')  goTo(active - 1);
       if (e.key === 'ArrowRight') goTo(active + 1);
     });
+  })();
+
+  /* ─── Service Card 1: Wireframe Dotted Globe ─── */
+  (function () {
+    var canvas, wrap, ctx, size, radius, projection, pathGen;
+    var allDots = [], landFeatures = null, rotTimer = null;
+    var rotation   = [0, -20];
+    var autoRotate = true;
+    var SPEED      = 0.22;
+    var ready      = false;
+
+    function setup() {
+      canvas = document.getElementById('svcGlobeCanvas');
+      wrap   = document.getElementById('svcGlobeWrap');
+      if (!canvas || !wrap || typeof d3 === 'undefined') return;
+
+      ctx = canvas.getContext('2d');
+
+      var rect = wrap.getBoundingClientRect();
+      size = Math.floor(rect.width);
+      if (size < 20) { requestAnimationFrame(setup); return; }
+
+      var dpr = window.devicePixelRatio || 1;
+      canvas.width  = size * dpr;
+      canvas.height = size * dpr;
+      canvas.style.width  = size + 'px';
+      canvas.style.height = size + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      radius = size * 0.43;
+
+      projection = d3.geoOrthographic()
+        .scale(radius)
+        .translate([size / 2, size / 2])
+        .clipAngle(90);
+
+      pathGen = d3.geoPath().projection(projection).context(ctx);
+
+      ready = true;
+      startRotation();
+      loadData();
+      attachDrag();
+    }
+
+    function ptInRing(pt, ring) {
+      var x = pt[0], y = pt[1], inside = false;
+      for (var i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        var xi = ring[i][0], yi = ring[i][1], xj = ring[j][0], yj = ring[j][1];
+        if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi) / (yj - yi)) + xi) inside = !inside;
+      }
+      return inside;
+    }
+
+    function ptInFeature(pt, feat) {
+      var g = feat.geometry;
+      var polys = g.type === 'Polygon' ? [g.coordinates] : g.coordinates;
+      for (var pi = 0; pi < polys.length; pi++) {
+        if (!ptInRing(pt, polys[pi][0])) continue;
+        var hole = false;
+        for (var ri = 1; ri < polys[pi].length; ri++) {
+          if (ptInRing(pt, polys[pi][ri])) { hole = true; break; }
+        }
+        if (!hole) return true;
+      }
+      return false;
+    }
+
+    function genDots(feat) {
+      var dots = [];
+      var b = d3.geoBounds(feat);
+      var step = 1.3;
+      for (var lng = b[0][0]; lng <= b[1][0]; lng += step) {
+        for (var lat = b[0][1]; lat <= b[1][1]; lat += step) {
+          if (ptInFeature([lng, lat], feat)) dots.push({ lng: lng, lat: lat });
+        }
+      }
+      return dots;
+    }
+
+    function render() {
+      if (!ready || !ctx) return;
+      ctx.clearRect(0, 0, size, size);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, radius, 0, 2 * Math.PI);
+      ctx.clip();
+
+      /* Ocean */
+      ctx.fillStyle = '#030609';
+      ctx.fillRect(0, 0, size, size);
+
+      if (landFeatures) {
+        /* Graticule */
+        ctx.beginPath();
+        pathGen(d3.geoGraticule()());
+        ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+
+        /* Land fill */
+        ctx.beginPath();
+        landFeatures.features.forEach(function(f) { pathGen(f); });
+        ctx.fillStyle = 'rgba(45,75,60,0.5)';
+        ctx.fill();
+
+        /* Land outline */
+        ctx.beginPath();
+        landFeatures.features.forEach(function(f) { pathGen(f); });
+        ctx.strokeStyle = 'rgba(64,122,94,0.55)';
+        ctx.lineWidth = 0.65;
+        ctx.stroke();
+
+        /* Dots */
+        ctx.fillStyle = 'rgba(110,210,160,0.7)';
+        for (var i = 0; i < allDots.length; i++) {
+          var p = projection([allDots[i].lng, allDots[i].lat]);
+          if (!p) continue;
+          ctx.beginPath();
+          ctx.arc(p[0], p[1], 0.9, 0, 2 * Math.PI);
+          ctx.fill();
+        }
+      }
+
+      ctx.restore();
+
+      /* Globe border */
+      ctx.beginPath();
+      ctx.arc(size / 2, size / 2, radius, 0, 2 * Math.PI);
+      ctx.strokeStyle = 'rgba(64,122,94,0.4)';
+      ctx.lineWidth = 1.2;
+      ctx.stroke();
+    }
+
+    function loadData() {
+      fetch('https://raw.githubusercontent.com/martynafford/natural-earth-geojson/refs/heads/master/110m/physical/ne_110m_land.json')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          landFeatures = data;
+          data.features.forEach(function(f) {
+            genDots(f).forEach(function(d) { allDots.push(d); });
+          });
+        })
+        .catch(function() { /* bare globe still spins */ });
+    }
+
+    function startRotation() {
+      if (rotTimer) rotTimer.stop();
+      rotTimer = d3.timer(function() {
+        if (autoRotate) {
+          rotation[0] += SPEED;
+          projection.rotate(rotation);
+        }
+        render();
+      });
+    }
+
+    function attachDrag() {
+      canvas.addEventListener('mousedown', function(e) {
+        autoRotate = false;
+        var sx = e.clientX, sy = e.clientY, sr = rotation.slice();
+        function onMove(ev) {
+          rotation[0] = sr[0] + (ev.clientX - sx) * 0.45;
+          rotation[1] = Math.max(-90, Math.min(90, sr[1] - (ev.clientY - sy) * 0.45));
+          projection.rotate(rotation);
+          render();
+        }
+        function onUp() {
+          document.removeEventListener('mousemove', onMove);
+          document.removeEventListener('mouseup', onUp);
+          setTimeout(function() { autoRotate = true; }, 120);
+        }
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+      });
+    }
+
+    /* Defer two frames so flex layout has resolved */
+    requestAnimationFrame(function() { requestAnimationFrame(setup); });
   })();
 </script>
 
